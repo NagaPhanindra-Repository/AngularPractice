@@ -1,0 +1,64 @@
+package com.mastercard.giftcard;
+
+
+
+import junit.framework.Assert;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+class GiftCardManagementApplicationTests {
+
+	private MockMvc mockMvc;
+	
+	@Autowired
+	private WebApplicationContext context;
+	
+	ObjectMapper objMapper=new ObjectMapper();
+	
+	public void contextSetup(){
+		mockMvc= MockMvcBuilders.webAppContextSetup(context).build();
+	}
+    
+	@Test
+	public void createValueChainTest(){
+		
+		MVTSegment chainSegment= new MVTSegment();
+		//SetAllthevalus for the this object
+		chainSegment.setValues();
+		String valueChainRequest=objMapper.writeValueAsString(chainSegment);
+		MvcResult result=mockMvc.perform(post("/give the endpoint or URI ")
+				.content(valueChainRequest).content(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andReturn();
+		String resultContent=result.getResponse().getContentAsString();
+		Response response=objMapper.readValue(resultContent,Response.class);
+		Assert.assertTrue(response.isStatus()==Boolean.TRUE);
+	}
+}
+
+
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+class Response{
+	
+	private String message;
+	private boolean status;
+}
