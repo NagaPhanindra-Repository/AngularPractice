@@ -409,3 +409,59 @@ public class RequestHeader {
 		
 		return admin;
 	}
+	
+	
+	
+	==================================================================================
+	
+	public AdministerPartiesRequest getAdminPartiesY(List namedInsuredList,String memberName) {
+		AdministerPartiesRequest admin= new AdministerPartiesRequest();
+		RequestHeader requestHeader=new RequestHeader();
+		requestHeader.setUserId(memberName);
+		requestHeader.setSystemName("SubmissionHub");
+		requestHeader.setMessageReference("3434434");
+		admin.setRequestHeader(requestHeader);
+		
+		admin.setUserCountry("USA");
+		admin.setPrimaryPartyIndicator("");
+		admin.setOriginalSourceSystem("SubmissionHub");
+		List contextList=new ArrayList();
+		
+		Context context=new Context();
+		context.setName("SNCBYPASSFLG");
+		context.setExternalReference("Y");
+		contextList.add(context);
+		admin.setContext(contextList);
+		
+		
+		PartiallyPopulatedPostalAddress partialAdd=new PartiallyPopulatedPostalAddress();
+		partialAdd.setCity("Schamburg");
+		partialAdd.setCountry("USA");
+		partialAdd.setPostalCode("60196");
+		partialAdd.setRegion("IL");
+		partialAdd.setAddressLines1("1299 Zurich Way");
+		partialAdd.setAddressLines2("Address 1");
+		
+		List entityList=new ArrayList();
+		for(Object namedinsured:namedInsuredList) {
+			Entity entity =new Entity();
+			entity.setFullName(namedinsured.toString());
+			entity.setPartiallyPopulatedPostalAddress(partialAdd);
+			entityList.add(entity);
+		}
+		
+//		Entity entity =new Entity();
+//		entity.setFullName("Mike Garage");
+//		entity.setPartiallyPopulatedPostalAddress(partialAdd);
+//		Entity entity2 =new Entity();
+//		entity2.setFullName("Ali Ayub");
+//		entity2.setPartiallyPopulatedPostalAddress(partialAdd);
+//		
+//		entityList.add(entity);
+//		
+//		entityList.add(entity2);
+		
+		admin.setEntity(entityList);
+		
+		return admin;
+	}
